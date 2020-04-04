@@ -7,70 +7,82 @@
 #include <iostream>
 
 using namespace std;
-unsigned int ns[] = { 10,20,50,100,500,1000,2500,5000,10000,15000};
+unsigned int ns[] = { 10,20,50,100,500,1000,2500,5000,10000,15000,100000};
 
 struct node {
     int key;
     node *left;
-    node *right 
+    node *right;
 };
 // tree's beginning is called the root
- node *root = NULL;
+struct node *root = NULL;
 
- node **tree_search( node **candidate, int value) {
-    if(value<candidate->key){
 
-    return tree_search(candidate->left, value);
-    }
-    if(value>candidate->key){
-
-    return tree_search(candidate->right, value);
-    }
+ struct node **tree_search(struct node **candidate, int value) {
+    struct node*temp;
+    temp=*candidate;
+ 	if(temp==NULL)
+ 		return candidate;
+    if(value < temp->key)
+    	return tree_search(&temp->left, value);
+    if(value > temp->key)
+    	return tree_search(&temp->right, value);
     return candidate;
-    return NULL;
+
 }
 
- node* tree_insert(int value) {
-    node*temp=new node;
-    node*tree_search(&root, value);
+ struct node* tree_insert(int value) {
+ 	struct node **nodeptr=tree_search(&root,value);
+ 	struct node*temp=new struct node;
     temp->key=value;
     temp->left=NULL;
     temp->right=NULL;
-    return NULL;
+    *nodeptr=temp;
+    return temp;
+   delete temp;
 }
 
 
 
-node **tree_maximum( node **candidate) {
-    if(candidate->right!=NULL){
-        return tree_maximum(candidate->right);
+struct node **tree_maximum(struct node **candidate) {
+    struct node*temp;
+    temp=*candidate;
+    if(temp->right!=NULL){
+        return tree_maximum(&temp->right);
     }
-
-    return NULL;
+    return candidate;
 }
 
 void tree_delete(int value) {
-    nodeptr*tree_search(&root, value);
-    if (nodeptr->left=NULL&&nodeptr->right=NULL){
-        *nodeptr= NULL;
+    struct node**candidate=tree_search(&root, value);
+    struct node*temp=*candidate;
+
+    if ((temp->left)==NULL&&(temp->right)==NULL){
+        *candidate= NULL;
     }
-    else if (nodeptr->left!=NULL&&nodeptr->right=NULL){
-        *nodeptr=nodeptr->left;
+    else if ((temp->left)!=NULL&&(temp->right)==NULL){
+        *candidate=temp->left;
     }
-    else if (nodeptr->left=NULL&&nodeptr->right!=NULL){
-        *nodeptr=nodeptr->right;
+    else if ((temp->left)==NULL&&(temp->right)!=NULL){
+        *candidate=temp->right;
     }
     else{
-        maxnodeptr*tree_maximum(nodeptr->left);
-        nodeptr->key= maxnodeptr->key;
-        *maxnodeptr=maxnodeptr->left;
+        struct node**maxnodeptr=tree_maximum(&temp->left);
+        (temp->key)= ((*maxnodeptr)->key);
+        *maxnodeptr=((*maxnodeptr)->left);
     }
 }
 
 unsigned int tree_size(struct node *element) {
     // TODO: implement
-    return 0;
+    if(element == NULL)
+      return 0;
+    else
+   return( tree_size((element->left) + tree_size(element->right)+1);
+  //
 }
+
+
 
 /*
  * Fill an array with increasing values.
@@ -162,7 +174,7 @@ int main(int argc, char **argv) {
             unsigned int n = ns[j];
 
             // crate an array of increasing integers: 0, 1, 2, ...
-            int *t = malloc(n * sizeof(*t));
+            int *t = new int(n * sizeof(*t));
             fill_increasing(t, n);
 
             // insert data using one of methods
@@ -198,7 +210,7 @@ int main(int argc, char **argv) {
             assert(tree_size(root) == 0);       // after all deletions, tree has size zero
 
             free(root);
-            free(t);
+            delete(t);
 
             printf("%d\t%s\t%f\t%f\n",
                     n,
