@@ -4,19 +4,16 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
-#include <iostream>
 
-using namespace std;
 unsigned int ns[] = { 10,20,50,100,500,1000,2500,5000,10000,15000,100000};
 
 struct node {
     int key;
-    node *left;
-    node *right;
+    struct node *left;
+    struct node *right;
 };
 // tree's beginning is called the root
 struct node *root = NULL;
-
 
  struct node **tree_search(struct node **candidate, int value) {
     struct node*temp;
@@ -33,13 +30,11 @@ struct node *root = NULL;
 
  struct node* tree_insert(int value) {
  	struct node **nodeptr=tree_search(&root,value);
- 	struct node*temp=new struct node;
-    temp->key=value;
-    temp->left=NULL;
-    temp->right=NULL;
-    *nodeptr=temp;
-    return temp;
-   delete temp;
+    struct node *createNode = malloc(sizeof(*createNode));
+    createNode->key = value;
+    createNode->left = NULL;
+    createNode->right = NULL;
+    *nodeptr = createNode;
 }
 
 
@@ -74,12 +69,11 @@ void tree_delete(int value) {
 }
 
 unsigned int tree_size(struct node *element) {
-    // TODO: implement
+
     if(element == NULL)
       return 0;
     else
-   return( tree_size((element->left) + tree_size(element->right)+1);
-  //
+   return (tree_size(element->left) + tree_size(element->right)+1);
 }
 
 
@@ -174,7 +168,7 @@ int main(int argc, char **argv) {
             unsigned int n = ns[j];
 
             // crate an array of increasing integers: 0, 1, 2, ...
-            int *t = new int(n * sizeof(*t));
+            int *t = malloc(n * sizeof(*t));
             fill_increasing(t, n);
 
             // insert data using one of methods
@@ -210,7 +204,7 @@ int main(int argc, char **argv) {
             assert(tree_size(root) == 0);       // after all deletions, tree has size zero
 
             free(root);
-            delete(t);
+            free(t);
 
             printf("%d\t%s\t%f\t%f\n",
                     n,
