@@ -1,60 +1,90 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <stdio.h>
+#include <ctime>
 #include <assert.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-unsigned int ns[] = { 10, /* TODO: fill values which will be used as lists' sizes */ };
 
-// each list node contains an integer key value and pointer to next list node
+using namespace std;
+unsigned int ns[]={10,15,30,50,75,100,125,150,200,500};
+
 struct node {
     int key;
-    struct node *next;
+     node *next;
+
 };
 
-// list's beginning is called the head of list
-struct node *head = NULL;
 
 
-struct node* list_insert(int value) {
-    // TODO: implement
-    return NULL;
+ node *head = NULL;
+ node*wsk;
+ node*prev;
+ node*createnode;
+
+
+ node* list_insert(int value) {
+
+
+       createnode->key=value;
+       createnode->next=head;
+       head=createnode;
+
+    return createnode;
 }
 
-struct node* list_search(int value) {
-    // TODO: implement
-    return NULL;
+
+ node* list_search(int value) {
+    node*wsk=head;
+    while(wsk!=NULL&&wsk->key!=value){
+        wsk=wsk->next;
+    }
+
+    return wsk;
+
 }
 
 void list_delete(int value) {
-    // TODO: implement
+    if (head->key=value){
+        head=head->next;
+    }
+    else{
+   prev=head;
+    wsk=head->next;
+    while(wsk!=NULL&&wsk->key!=value){
+        prev=wsk;
+        wsk=wsk->next;
+    }
+    if(wsk!=NULL){
+            prev->next=wsk->next;
+
+    }
+
+    }
+
 }
 
 unsigned int list_size() {
-    // TODO: implement
-    return 0;
+    int size=0;
+    wsk=head;
+    while(wsk!=NULL){
+        size=size+1;
+        wsk=wsk->next;
+    }
+    return size;
+
 }
 
-/*
- * Fill an array with increasing values.
- *
- * Parameters:
- *      int *t:     pointer to the array
- *      int n:      number of elements in the array
- */
+
+
 void fill_increasing(int *t, int n) {
     for (int i = 0; i < n; i++) {
         t[i] = i;
     }
 }
 
-/*
- * Reorder array elements in a random way.
- *
- * Parameters:
- *      int *t:     pointer to the array
- *      int n:      number of elements in the array
- */
+
 void shuffle(int *t, int n) {
     for (int i = n - 1; i > 0; i--) {
         int j = rand() % i;
@@ -63,18 +93,15 @@ void shuffle(int *t, int n) {
         t[j] = temp;
     }
 }
-
-int main() {
-    bool no_yes[] = { false, true };
+int main(){
+bool no_yes[] = { false, true };
 
     for (unsigned int i = 0; i < sizeof(no_yes) / sizeof(*no_yes); i++) {
         bool enable_shuffle = no_yes[i];
 
         for (unsigned int j = 0; j < sizeof(ns) / sizeof(*ns); j++) {
             unsigned int n = ns[j];
-
-            // always create an array of size `n` and fill it with increasing values
-            int *t = malloc(n * sizeof(*t));
+            int*t=new int[n];
             fill_increasing(t, n);
 
             // if true, reorder array elements randomly
@@ -114,12 +141,14 @@ int main() {
             assert(list_size() == 0);       // after all deletions, the list size is zero
             assert(head == NULL);           // after all deletions, the list's head is NULL
 
-            free(t);
+          delete[]t;
 
-            printf("%d\t%s\t%f\t%f\n", n, enable_shuffle ? "true" : "false",
+
+                    printf("%d\t%s\t%f\t%f\n", n, enable_shuffle ? "true" : "false",
                     (double)insertion_time / CLOCKS_PER_SEC,
                     (double)search_time / CLOCKS_PER_SEC);
         }
     }
     return 0;
 }
+
