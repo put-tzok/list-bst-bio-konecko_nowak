@@ -17,7 +17,7 @@ struct node {
 // tree's beginning is called the root
  node *root = NULL;
 
- node *tree_search( node *candidate, int value) {
+ node **tree_search( node **candidate, int value) {
     if(value<candidate->key){
 
     return tree_search(candidate->left, value);
@@ -41,7 +41,7 @@ struct node {
 
 
 
-node *tree_maximum( node *candidate) {
+node **tree_maximum( node **candidate) {
     if(candidate->right!=NULL){
         return tree_maximum(candidate->right);
     }
