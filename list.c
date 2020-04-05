@@ -1,52 +1,43 @@
-#include <iostream>
-#include <cstdlib>
-#include <cstdio>
+#include <stdlib.h>
 #include <stdio.h>
-#include <ctime>
+#include <time.h>
 #include <assert.h>
 #include <stdbool.h>
 
 
-using namespace std;
-unsigned int ns[]={10,15,30,50,75,100,125,150,200,500};
+unsigned int ns[]={10,20,50,100,500,1000,2500,5000,10000,15000};
 
 struct node {
-    int key;
-     node *next;
-
+int key;
+struct node *next;
 };
 
+struct node*head = NULL;
+struct node*wsk;
+struct node*prev;
 
 
- node *head = NULL;
- node*wsk;
- node*prev;
- node*createnode;
+struct node* list_insert(int value) {
 
-
- node* list_insert(int value) {
-
-
-       createnode->key=value;
-       createnode->next=head;
-       head=createnode;
-
+    struct node*createnode=malloc(sizeof(*createnode));
+    createnode->key=value;
+    createnode->next=head;
+    head=createnode;
     return createnode;
 }
 
 
- node* list_search(int value) {
-    node*wsk=head;
+struct node* list_search(int value) {
+    struct node*wsk=head;
     while(wsk!=NULL&&wsk->key!=value){
-        wsk=wsk->next;
+    wsk=wsk->next;
     }
-
     return wsk;
 
 }
 
 void list_delete(int value) {
-    if (head->key=value){
+    if (head->key==value){
         head=head->next;
     }
     else{
@@ -69,7 +60,7 @@ unsigned int list_size() {
     int size=0;
     wsk=head;
     while(wsk!=NULL){
-        size=size+1;
+        size+=1;
         wsk=wsk->next;
     }
     return size;
@@ -101,7 +92,7 @@ bool no_yes[] = { false, true };
 
         for (unsigned int j = 0; j < sizeof(ns) / sizeof(*ns); j++) {
             unsigned int n = ns[j];
-            int*t=new int[n];
+          int *t = malloc(n * sizeof(*t));
             fill_increasing(t, n);
 
             // if true, reorder array elements randomly
@@ -141,7 +132,7 @@ bool no_yes[] = { false, true };
             assert(list_size() == 0);       // after all deletions, the list size is zero
             assert(head == NULL);           // after all deletions, the list's head is NULL
 
-          delete[]t;
+          free(t);
 
 
                     printf("%d\t%s\t%f\t%f\n", n, enable_shuffle ? "true" : "false",
@@ -151,4 +142,3 @@ bool no_yes[] = { false, true };
     }
     return 0;
 }
-
