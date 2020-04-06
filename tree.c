@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <time.h>
 
-unsigned int ns[] = { 10,20,50,100,500,1000,2500,5000,10000,15000,100000};
+unsigned int ns[] = { 10,20,50,100,500,1000,2500,5000,10000,15000};
 
 struct node {
     int key;
@@ -36,8 +36,6 @@ struct node *root = NULL;
     createNode->right = NULL;
     *nodeptr = createNode;
 }
-
-
 
 struct node **tree_maximum(struct node **candidate) {
     struct node*temp;
@@ -75,8 +73,6 @@ unsigned int tree_size(struct node *element) {
     else
    return (tree_size(element->left) + tree_size(element->right)+1);
 }
-
-
 
 /*
  * Fill an array with increasing values.
@@ -153,8 +149,27 @@ void insert_random(int *t, int n) {
     }
 }
 
-void insert_binary(int *t, int n) {
-    // TODO: implement
+void tree_insert_biject(int *t, int p, int r)
+{
+  if(p == r)
+  {
+    tree_insert(t[p]);
+  }
+  else if(r-p == 1)
+  {
+    tree_insert(t[p]);
+    tree_insert(t[r]);
+  }
+  else
+  {
+    int q = p + (r - p)/2;
+    tree_insert(t[q]);
+    tree_insert_biject(t, p, q-1);
+    tree_insert_biject(t, q+1, r);
+  }
+}
+void insert_binary(int *t, int n){
+    tree_insert_biject(t, 0, n-1);
 }
 
 char *insert_names[] = { "Increasing", "Random", "Binary" };
