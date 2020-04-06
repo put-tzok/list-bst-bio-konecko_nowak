@@ -23,7 +23,7 @@ struct node* list_insert(int value) {
     createnode->key=value;
     createnode->next=head;
     head=createnode;
-    return createnode;
+    return head;
 }
 
 
